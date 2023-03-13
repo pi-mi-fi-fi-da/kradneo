@@ -3,11 +3,11 @@
     "mongodb1": {
       "containerPorts": "27017:27017",
       "secretStore": "LocalSecretsFile",
-      "containerName": "mongodb",
-      "containerImage": "mongo",
-      "resourceId": null,
+      "containerName": "mongo-db",
+      "containerImage": "mongo:4.4",
       "type": "mongodb.container",
-      "connectionId": "db-mongo"
+      "connectionId": "mongo-db",
+      "dynamicId": null
     }
   }
 }
