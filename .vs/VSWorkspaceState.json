@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\app",
+    "\\app\\app",
+    "\\app\\app\\Controllers"
   ],
+  "SelectedNode": "\\app\\app\\Controllers\\PhrasesController.cs",
   "PreviewInSolutionExplorer": false
 }
