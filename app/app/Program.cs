@@ -10,6 +10,10 @@ builder.Services.Configure<PhraseStoreDatabaseSettings>(
     builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<PhrasesService>();
 
+builder.Services.Configure<PhraseProductStoreDatabaseSettings>(
+    builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<PhraseProductsService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Phrases}/{action=Index}/{id?}");
 
 app.Run();

@@ -8,9 +8,21 @@ namespace app.Controllers
     public class PhrasesController : Controller
     {
         private readonly PhrasesService _PhrasesService;
+       
+        private readonly PhraseProductsService _PhraseProductsService;
 
-        public PhrasesController(PhrasesService PhrasesService) =>
-            _PhrasesService = PhrasesService;
+        public PhrasesController(
+            PhrasesService PhrasesService,
+            PhraseProductsService PhraseProductsService
+            )
+        {{}
+            _PhrasesService = PhrasesService; 
+            _PhraseProductsService = PhraseProductsService;
+            }
+
+
+        /*public PhraseProductsController(PhraseProductsService PhraseProductsService) =>
+            _PhraseProductsService = PhraseProductsService;*/
 
         // GET: PhrasesController
         public async Task<ActionResult<Phrase>> Index()
