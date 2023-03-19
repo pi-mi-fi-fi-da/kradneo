@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app", "app\app.csproj", "{EBB60609-42C4-494B-A3A6-C1C9ADDD2496}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app\app.csproj", "{EBB60609-42C4-494B-A3A6-C1C9ADDD2496}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "inne", "inne", "{0155FEBD-B77F-4765-9F7C-B418600D5548}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.vs\sd\ebb60609-42c4-494b-a3a6-c1c9addd2496\.run\mongodb1.docker-compose.yml = .vs\sd\ebb60609-42c4-494b-a3a6-c1c9addd2496\.run\mongodb1.docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

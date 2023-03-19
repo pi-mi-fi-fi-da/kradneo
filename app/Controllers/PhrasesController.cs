@@ -1,6 +1,5 @@
 ﻿using app.Models;
 using app.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers;
@@ -8,43 +7,41 @@ namespace app.Controllers;
 public class PhrasesController : Controller
 {
     private readonly PhrasesService _PhrasesService;
-   
+
     private readonly PhraseProductsService _PhraseProductsService;
 
     public PhrasesController(
         PhrasesService PhrasesService,
         PhraseProductsService PhraseProductsService
         )
-    {{}
-        _PhrasesService = PhrasesService; 
+    {
+        _PhrasesService = PhrasesService;
         _PhraseProductsService = PhraseProductsService;
-        }
+    }
 
 
     /*public PhraseProductsController(PhraseProductsService PhraseProductsService) =>
         _PhraseProductsService = PhraseProductsService;*/
 
     // GET: PhrasesController
-    public async Task<ActionResult<Phrase>> Index()
+    public async Task<ActionResult<List<Phrase>>> Index(CancellationToken cancellationToken)
     {
-        var phrases = await _PhrasesService.GetAsync();
-        if (phrases is null)
-        {
-            return NotFound();
-        }
+        var phrases = await _PhrasesService.GetAsync(cancellationToken);
 
-        return View(phrases);
+        return phrases is null 
+            ? NotFound() 
+            : View(phrases);
     }
 
     // GET: PhrasesController/Details/5
-    public async Task<ActionResult<Phrase>> Details(string id)
+    public async Task<ActionResult<Phrase>> Details(string id, CancellationToken cancellationToken)
     {
-        var phrase = await _PhrasesService.GetAsync(id);
+        var phrase = await _PhrasesService.GetAsync(id, cancellationToken);
         return View(phrase);
     }
 
     // GET: PhrasesController/Create
-    public ActionResult Create()
+    public ActionResult Create(CancellationToken cancellationToken)
     {
         return View();
     }
@@ -52,7 +49,7 @@ public class PhrasesController : Controller
     // POST: PhrasesController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(IFormCollection collection)
+    public ActionResult Create(IFormCollection collection, CancellationToken cancellationToken)
     {
         try
         {
@@ -65,7 +62,7 @@ public class PhrasesController : Controller
     }
 
     // GET: PhrasesController/Edit/5
-    public ActionResult Edit(int id)
+    public ActionResult Edit(int id, CancellationToken cancellationToken)
     {
         return View();
     }
@@ -73,7 +70,7 @@ public class PhrasesController : Controller
     // POST: PhrasesController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, IFormCollection collection)
+    public ActionResult Edit(int id, IFormCollection collection, CancellationToken cancellationToken)
     {
         try
         {
@@ -94,7 +91,7 @@ public class PhrasesController : Controller
     // POST: PhrasesController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, IFormCollection collection)
+    public ActionResult Delete(int id, IFormCollection collection, CancellationToken cancellationToken)
     {
         try
         {

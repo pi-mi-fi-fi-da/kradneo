@@ -35,7 +35,7 @@ bld/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
-app/.vs/
+!.vs/sd/ebb60609-42c4-494b-a3a6-c1c9addd2496/.run/mongodb1.docker-compose.yml
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
