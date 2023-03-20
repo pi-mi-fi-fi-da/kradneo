@@ -49,57 +49,53 @@ public class PhrasesController : Controller
     // POST: PhrasesController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(IFormCollection collection, CancellationToken cancellationToken)
+    public async Task<ActionResult<Phrase>> Create(Phrase newPhrase, CancellationToken cancellationToken)
     {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
+        await _PhrasesService.CreateAsync(newPhrase, cancellationToken);
+        return RedirectToAction("Index");
     }
 
     // GET: PhrasesController/Edit/5
-    public ActionResult Edit(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<Phrase>> Edit(string id, CancellationToken cancellationToken)
     {
-        return View();
+        var phrase = await _PhrasesService.GetAsync(id, cancellationToken);
+        return View(phrase);
     }
 
     // POST: PhrasesController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, IFormCollection collection, CancellationToken cancellationToken)
+    public async Task<ActionResult<Phrase>> Edit(string id, Phrase newPhrase, CancellationToken cancellationToken)
     {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
+        await _PhrasesService.UpdateAsync(id, newPhrase, cancellationToken);
+        return RedirectToAction("Index");
     }
 
     // GET: PhrasesController/Delete/5
-    public ActionResult Delete(int id)
+    public async Task<ActionResult<Phrase>> Delete(string id, CancellationToken cancellationToken)
     {
-        return View();
+        var phrase = await _PhrasesService.GetAsync(id, cancellationToken);
+        if (phrase is null)
+        {
+            return NotFound();
+        }
+        return View(phrase);
     }
 
     // POST: PhrasesController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, IFormCollection collection, CancellationToken cancellationToken)
+    public async Task<ActionResult<Phrase>> Delete(Phrase newPhrase, CancellationToken cancellationToken)
     {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
+        if (newPhrase.Id is null)
         {
             return View();
         }
+        else
+        {
+            await _PhrasesService.RemoveAsync(newPhrase.Id, cancellationToken);
+            return RedirectToAction("Index");
+        }
+
     }
 }
