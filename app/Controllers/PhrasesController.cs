@@ -19,14 +19,10 @@ public class PhrasesController : Controller
         _PhraseProductsService = PhraseProductsService;
     }
 
-
-    /*public PhraseProductsController(PhraseProductsService PhraseProductsService) =>
-        _PhraseProductsService = PhraseProductsService;*/
-
     // GET: PhrasesController
     public async Task<ActionResult<List<Phrase>>> Index(CancellationToken cancellationToken)
     {
-        var phrases = await _PhrasesService.GetAsync(cancellationToken);
+        var phrases = await _PhrasesService.GetAllAsync(cancellationToken);
 
         return phrases is null 
             ? NotFound() 
@@ -36,7 +32,7 @@ public class PhrasesController : Controller
     // GET: PhrasesController/Details/5
     public async Task<ActionResult<Phrase>> Details(string id, CancellationToken cancellationToken)
     {
-        var phrase = await _PhrasesService.GetAsync(id, cancellationToken);
+        var phrase = await _PhrasesService.GetOneAsync(id, cancellationToken);
         return View(phrase);
     }
 
@@ -58,7 +54,7 @@ public class PhrasesController : Controller
     // GET: PhrasesController/Edit/5
     public async Task<ActionResult<Phrase>> Edit(string id, CancellationToken cancellationToken)
     {
-        var phrase = await _PhrasesService.GetAsync(id, cancellationToken);
+        var phrase = await _PhrasesService.GetOneAsync(id, cancellationToken);
         return View(phrase);
     }
 
@@ -74,7 +70,7 @@ public class PhrasesController : Controller
     // GET: PhrasesController/Delete/5
     public async Task<ActionResult<Phrase>> Delete(string id, CancellationToken cancellationToken)
     {
-        var phrase = await _PhrasesService.GetAsync(id, cancellationToken);
+        var phrase = await _PhrasesService.GetOneAsync(id, cancellationToken);
         if (phrase is null)
         {
             return NotFound();
