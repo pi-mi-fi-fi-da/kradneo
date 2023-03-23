@@ -1,5 +1,6 @@
 using app.Models;
 using app.Services;
+using DataGeter;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
@@ -33,6 +34,9 @@ builder.Services.AddSingleton(products);
 builder.Services.AddScoped<PhrasesService>();
 builder.Services.AddScoped<PhraseProductsService>();
 
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -64,3 +68,4 @@ app.MapControllerRoute(
 //});
 
 app.Run();
+
