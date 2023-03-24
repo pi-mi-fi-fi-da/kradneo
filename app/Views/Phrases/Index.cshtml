@@ -1,41 +1,63 @@
 ﻿@model IEnumerable<app.Models.Phrase>
-
 @{
-    ViewData["Title"] = "Index";
+	var i = 1;
 }
 
-<h1>Index</h1>
+<h1>Lista fraz</h1>
+<hr />
+<br />
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<input type="button"
+		   class="btn btn-primary"
+		   value="Dodaj nową frazę"
+		   onclick="location.href='@Url.Action("Create", "Phrases")'" />
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<br />
+<div class="container">
+	<div class="row">
+		<div class="col"></div>
+		<div class="col-7">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th>
+							#
+						</th>
+						<th style="width: 45%;" class="text-center">
+							Fraza
+						</th>
+						<th class="action_row">
+							Akcje
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@i
+							</td>
+							<td class="text-center">
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td class="text-center">
+								<input type="button"
+									   class="btn btn-primary"
+									   value="Lista produktów"
+									   onclick="location.href='@Url.Action("Details", "Phrases", new { id=item.Id })'" />
+								<input type="button"
+									   class="btn btn-primary"
+									   value="Usuń frazę"
+									   onclick="location.href='@Url.Action("Delete", "Phrases", new { id=item.Id })'" />
+							</td>
+						</tr>
+						i++;
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="col"></div>
+	</div>
+</div>

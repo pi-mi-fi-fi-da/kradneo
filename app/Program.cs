@@ -28,7 +28,6 @@ IMongoCollection<PhraseProduct> products = database.GetCollection<PhraseProduct>
 builder.Services.AddSingleton(phrases);
 builder.Services.AddSingleton(products);
 
-
 //Services
 builder.Services.AddScoped<PhrasesService>();
 builder.Services.AddScoped<PhraseProductsService>();
@@ -64,3 +63,4 @@ app.MapControllerRoute(
 //});
 
 app.Run();
+

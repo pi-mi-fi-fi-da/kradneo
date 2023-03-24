@@ -2,12 +2,12 @@
   "dependencies": {
     "mongodb1": {
       "containerPorts": "27017:27017",
-      "secretStore": "LocalSecretsFile",
+      "secretStore": null,
       "containerName": "mongo-db",
       "containerImage": "mongo:4.4",
+      "resourceId": null,
       "type": "mongodb.container",
-      "connectionId": "mongo-db",
-      "dynamicId": null
+      "connectionId": "mongo-db"
     }
   }
 }

@@ -1,0 +1,60 @@
+﻿@model app.Models.PhraseDetail
+@{
+	var i = 1;
+}
+
+<h1>Fraza szczegóły</h1>
+<div>
+    <hr />
+    <dl class="row">
+    </dl>
+</div>
+<div>
+    <input type="button"
+           class="btn btn-primary"
+           value="Powrót do listy fraz"
+           onclick="location.href='@Url.Action("Index", "Phrases")'" />
+</div>
+<br />
+<br />
+
+<h2>@Model.phrase.Name</h2>
+
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<th>
+				#
+			</th>
+			<th style="width: 45%;" class="text-center">
+				Nazwa produktu
+			</th>
+			<th class="text-center">
+				Cena
+			</th>
+			<th class="text-center">
+				Obrazek
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var products in Model.phraseProducts)
+		{
+			<tr>
+				<td>
+					@i
+				</td>
+				<td class="text-center">
+					@Html.DisplayFor(modelItem => products.ProductName)
+				</td>
+				<td class="text-center">
+					@Html.DisplayFor(modelItem => products.Price)
+				</td>
+				<td>
+
+				</td>
+			</tr>
+			i++;
+		}
+	</tbody>
+</table>
