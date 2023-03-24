@@ -1,42 +1,176 @@
 ﻿@model app.Models.PhraseDetail
 @{
-	var i = 1;
+    var i = 1;
 }
+<head>
+    <script>
+        var sortOrder = Request?.Cookies["sortOrder"] ?? "asc";
 
-<h1>Fraza szczegóły</h1>
-<div>
-    <hr />
-    <dl class="row">
-    </dl>
+
+        // Define the function for sorting the table
+        function sortTable(n, order) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = order == "asc" ? "asc" : "desc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+            // Save the sorting order to a cookie
+            setCookie("sortOrder", n + "-" + order, 365);
+        }
+
+        // Define the function for setting a cookie
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // Retrieve the sorting order from a cookie on page load
+        window.onload = function () {
+            var sortOrder = getCookie("sortOrder");
+            if (sortOrder) {
+                var parts = sortOrder.split("-");
+                var colIndex = parseInt(parts[0]);
+                var order = parts[1];
+                sortTable(colIndex, order);
+            }
+        }
+
+        // Define the function for getting a cookie
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, sortIndicator;
+            table = document.getElementById("myTable");
+            switching = true;
+            dir = localStorage.getItem("sortOrder") || "asc";
+            sortIndicator = dir === "asc" ? "&#x25B2;" : "&#x25BC;"; // up or down arrow
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+            dir = shouldSwitch ? (dir === "asc" ? "desc" : "asc") : dir;
+            localStorage.setItem("sortOrder", dir);
+            sortIndicator = dir === "asc" ? "&#x25B2;" : "&#x25BC;"; // update sort indicator
+            document.getElementById("sortIndicator").innerHTML = sortIndicator;
+        }
+
+
+    </script>
+
+</head>
+    
+<div class="d-flex justify-content-between align-items-center">
+    <h1>Fraza szczegóły</h1>
+    <p>
+        <input type="button"
+               class="btn btn-primary  btn-lg"
+               value="  Powrót do listy fraz  "
+               onclick="location.href='@Url.Action("Index", "Phrases")'" />
+    </p>
 </div>
+
+
+
 <div>
-    <input type="button"
-           class="btn btn-primary"
-           value="Powrót do listy fraz"
-           onclick="location.href='@Url.Action("Index", "Phrases")'" />
+	<hr />
+	<dl class="row">
+	</dl>
+</div>
+
+
+
+
+<div class="d-flex justify-content-between align-items-center">
+    <h2>@Model.phrase.Name</h2>
+    <p>
+        <i>@Model.phrase.Id</i>
+    </p>
 </div>
 <br />
-<br />
-
-<h2>@Model.phrase.Name</h2>
-
 <table class="table">
-	<thead class="thead-dark">
-		<tr>
-			<th>
-				#
-			</th>
-			<th style="width: 45%;" class="text-center">
-				Nazwa produktu
-			</th>
-			<th class="text-center">
-				Cena
-			</th>
-			<th class="text-center">
-				Obrazek
-			</th>
-		</tr>
-	</thead>
+<thead class="thead-dark">
+	<tr>
+		<th>
+			#
+		</th>
+		<th>
+			<a href="#" onclick="sortTable('ProductName')">Nazwa produktu</a>
+		</th>
+		<th>
+			<a href="#" onclick="sortTable('Price')">Cena</a>
+		</th>
+		<th>
+			<a href="#" onclick="sortTable('CreatedAt')">Utworzony</a>
+		</th>
+		<th>
+			Obrazek
+		</th>
+	</tr>
+</thead>
+
 	<tbody>
 		@foreach (var products in Model.phraseProducts)
 		{
@@ -50,8 +184,11 @@
 				<td class="text-center">
 					@Html.DisplayFor(modelItem => products.Price)
 				</td>
-				<td>
-
+				<td class="text-center">
+					@Html.DisplayFor(modelItem => products.CreatedAt)
+				</td>
+				<td class="text-center">
+					@Html.DisplayFor(modelItem => products.ImageUrl)
 				</td>
 			</tr>
 			i++;
