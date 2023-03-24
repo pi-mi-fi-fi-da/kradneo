@@ -1,6 +1,5 @@
 using app.Models;
 using app.Services;
-using DataGeter;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
