@@ -38,7 +38,7 @@ public class Scrapper
         {
             PhraseProduct ProductToAdd = new PhraseProduct
             {
-                PhraseId = p.GetAttributeValue("data-productid", "No information"),
+                PhraseCeneoId = p.GetAttributeValue("data-productid", "No information"),
                 PhraseName = p.GetAttributeValue("data-productname", "No Information"),
                 Price = p.GetAttributeValue("data-productminprice", "No Information".Replace(',', '.')),
                 CreatedAt = DateTime.Now,
@@ -52,31 +52,31 @@ public class Scrapper
     public async Task TrackData(CancellationToken cancellationToken)
     {
         List<Phrase> phrases = new List<Phrase>();
-        phrases = await _phrasesService.GetAsync(cancellationToken);
+        phrases = await _phrasesService.GetAllAsync(cancellationToken);
         foreach(Phrase phrase in phrases)
         {
             List<PhraseProduct> products = new List<PhraseProduct>();
             List<PhraseProduct> productsAtDatabaseCeneoId = new List<PhraseProduct>();
             products = await GetProductData(phrase.Name);
-            productsAtDatabaseCeneoId = await _phraseProductsService.GetAsync();
+            productsAtDatabaseCeneoId = await _phraseProductsService.GetAllAsync(cancellationToken);
             foreach(var product in products)
             {
-                if(!productsAtDatabaseCeneoId.Exists(x => x.PhraseId == product.PhraseId))
+                if(!productsAtDatabaseCeneoId.Exists(x => x.PhraseCeneoId == product.PhraseCeneoId))
                 {
-                    await _phraseProductsService.CreateAsync(product);
+                    await _phraseProductsService.CreateAsync(product, cancellationToken);
                 }
                 else
                 {
                     PhraseProduct productToAdd = new PhraseProduct() //produkt bez podstawowych danych
                     {
-                        PhraseId = product.PhraseId,
+                        PhraseCeneoId = product.PhraseCeneoId,
                         Price = product.Price,
                         CreatedAt = product.CreatedAt,
                         PhraseName = null,
                         ImageUrl = null
 
                     };
-                    await _phraseProductsService.CreateAsync(productToAdd);
+                    await _phraseProductsService.CreateAsync(productToAdd, cancellationToken);
                 }
             }
         }

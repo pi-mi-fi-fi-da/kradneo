@@ -30,10 +30,13 @@ public class PhrasesController : Controller
     }
 
     // GET: PhrasesController/Details/5
-    public async Task<ActionResult<Phrase>> Details(string id, CancellationToken cancellationToken)
+    public async Task<ActionResult<PhraseDetail>> Details(string id, CancellationToken cancellationToken)
     {
         var phrase = await _PhrasesService.GetOneAsync(id, cancellationToken);
-        return View(phrase);
+        if (phrase is null) return NotFound();
+        var phraseProducts = await _PhraseProductsService.GetAllByPhraseNameAsync(phrase.Name, cancellationToken);
+        var test = new PhraseDetail(phrase, phraseProducts);
+        return View(test);
     }
 
     // GET: PhrasesController/Create
@@ -48,23 +51,7 @@ public class PhrasesController : Controller
     public async Task<ActionResult<Phrase>> Create(Phrase newPhrase, CancellationToken cancellationToken)
     {
         await _PhrasesService.CreateAsync(newPhrase, cancellationToken);
-        return RedirectToAction("Index");
-    }
-
-    // GET: PhrasesController/Edit/5
-    public async Task<ActionResult<Phrase>> Edit(string id, CancellationToken cancellationToken)
-    {
-        var phrase = await _PhrasesService.GetOneAsync(id, cancellationToken);
-        return View(phrase);
-    }
-
-    // POST: PhrasesController/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<ActionResult<Phrase>> Edit(string id, Phrase newPhrase, CancellationToken cancellationToken)
-    {
-        await _PhrasesService.UpdateAsync(id, newPhrase, cancellationToken);
-        return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: PhrasesController/Delete/5
@@ -93,5 +80,10 @@ public class PhrasesController : Controller
             return RedirectToAction("Index");
         }
 
+    }
+
+    public IActionResult Privacy()
+    {
+        return View();
     }
 }

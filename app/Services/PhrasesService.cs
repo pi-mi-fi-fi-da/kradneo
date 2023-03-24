@@ -21,9 +21,6 @@ public class PhrasesService
     public async Task CreateAsync(Phrase newPhrase, CancellationToken cancellationToken) =>
         await _PhrasesCollection.InsertOneAsync(newPhrase, cancellationToken);
 
-    public async Task UpdateAsync(string id, Phrase updatedPhrase, CancellationToken cancellationToken) =>
-        await _PhrasesCollection.ReplaceOneAsync(x => x.Id == id, updatedPhrase, cancellationToken: cancellationToken);
-
     public async Task RemoveAsync(string id, CancellationToken cancellationToken) =>
         await _PhrasesCollection.DeleteOneAsync(x => x.Id == id, cancellationToken);
 }

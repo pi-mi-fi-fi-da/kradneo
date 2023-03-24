@@ -2,8 +2,7 @@
   "dependencies": {
     "mongodb1": {
       "type": "mongodb",
-      "connectionId": "mongo-db",
-      "dynamicId": null
+      "connectionId": "mongo-db"
     }
   }
 }
