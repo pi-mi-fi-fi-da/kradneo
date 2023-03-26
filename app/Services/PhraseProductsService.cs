@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace app.Services;
 
-public class PhraseProductsService
+public class PhraseProductsService : IPhrasesProductService
 {
     private readonly IMongoCollection<PhraseProduct> _PhrasesProductsCollection;
 

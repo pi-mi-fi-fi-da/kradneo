@@ -3,14 +3,15 @@ using app.Models;
 using MongoDB.Driver;
 using System.Threading;
 using app.Services;
+using Quartz;
 
 namespace DataGeter;
 
-public class Scrapper
+public class Scrapper 
 {
-    private readonly PhraseProductsService _phraseProductsService;
-    private readonly PhrasesService _phrasesService;
-    public Scrapper(PhraseProductsService phraseProductsService, PhrasesService phrasesService)
+    private readonly IPhrasesProductService _phraseProductsService;
+    private readonly IPhrasesService _phrasesService;
+    public Scrapper(IPhrasesProductService phraseProductsService, IPhrasesService phrasesService)
     {
         _phraseProductsService = phraseProductsService;
         _phrasesService = phrasesService;   
