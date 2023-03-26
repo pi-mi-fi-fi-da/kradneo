@@ -6,14 +6,11 @@ namespace app.Controllers;
 
 public class PhrasesController : Controller
 {
-    private readonly PhrasesService _PhrasesService;
+    private readonly IPhrasesService _PhrasesService;
 
-    private readonly PhraseProductsService _PhraseProductsService;
+    private readonly IPhrasesProductService _PhraseProductsService;
 
-    public PhrasesController(
-        PhrasesService PhrasesService,
-        PhraseProductsService PhraseProductsService
-        )
+    public PhrasesController(IPhrasesService PhrasesService, IPhrasesProductService PhraseProductsService)
     {
         _PhrasesService = PhrasesService;
         _PhraseProductsService = PhraseProductsService;
@@ -79,9 +76,7 @@ public class PhrasesController : Controller
             await _PhrasesService.RemoveAsync(newPhrase.Id, cancellationToken);
             return RedirectToAction("Index");
         }
-
     }
-
     public IActionResult Privacy()
     {
         return View();

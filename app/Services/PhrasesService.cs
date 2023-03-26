@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace app.Services;
 
-public class PhrasesService
+public class PhrasesService : IPhrasesService
 {
     private readonly IMongoCollection<Phrase> _PhrasesCollection;
 

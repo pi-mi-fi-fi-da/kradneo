@@ -1,5 +1,6 @@
 using app.Models;
 using app.Services;
+using DataGeter;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
@@ -29,8 +30,13 @@ builder.Services.AddSingleton(phrases);
 builder.Services.AddSingleton(products);
 
 //Services
-builder.Services.AddScoped<PhrasesService>();
-builder.Services.AddScoped<PhraseProductsService>();
+builder.Services.AddScoped<IPhrasesService, PhrasesService>();
+builder.Services.AddScoped<IPhrasesProductService, PhraseProductsService>();
+
+//quartz
+
+
+
 
 var app = builder.Build();
 
@@ -61,6 +67,8 @@ app.MapControllerRoute(
 //    //var products = app.Services.GetRequiredService<IMongoCollection<PhraseProduct>>();
 //    //await products.InsertOneAsync(new PhraseProduct { PhraseName = $"fraza_{DateTime.UtcNow}" });
 //});
-
+Scrapper scrapper = new Scrapper(new PhraseProductsService(products), new PhrasesService(phrases));
+await scrapper.TrackData(CancellationToken.None);
 app.Run();
+
 
