@@ -3,17 +3,18 @@
 	var i = 1;
 }
 
-<h1>Lista fraz</h1>
+<div class="d-flex justify-content-between align-items-center">
+	<h1>Lista fraz</h1>
+	<p>
+		<input type="button"
+			   class="btn btn-primary  btn-lg"
+			   value="  Dodaj nową frazę  "
+			   onclick="location.href='@Url.Action("Create", "Phrases")'" />
+	</p>
+</div>
 <hr />
 <br />
 
-<p>
-	<input type="button"
-		   class="btn btn-primary"
-		   value="Dodaj nową frazę"
-		   onclick="location.href='@Url.Action("Create", "Phrases")'" />
-</p>
-<br />
 <div class="container">
 	<div class="row">
 		<div class="col"></div>
@@ -27,7 +28,7 @@
 						<th style="width: 45%;" class="text-center">
 							Fraza
 						</th>
-						<th class="action_row">
+						<th class="text-center action_row">
 							Akcje
 						</th>
 					</tr>
@@ -44,19 +45,20 @@
 							</td>
 							<td class="text-center">
 								<input type="button"
-									   class="btn btn-primary"
-									   value="Lista produktów"
-									   onclick="location.href='@Url.Action("Details", "Phrases", new { id=item.Id })'" />
+								   class="btn btn-primary"
+								   value="  Lista produktów  "
+								   onclick="location.href='@Url.Action("Details", "Phrases", new { id=item.Id })'" />
 								<input type="button"
-									   class="btn btn-primary"
-									   value="Usuń frazę"
-									   onclick="location.href='@Url.Action("Delete", "Phrases", new { id=item.Id })'" />
+								   class="btn btn-primary"
+								   value="  Usuń frazę  "
+								   onclick="location.href='@Url.Action("Delete", "Phrases", new { id=item.Id })'" />
 							</td>
 						</tr>
 						i++;
 					}
 				</tbody>
 			</table>
+
 		</div>
 		<div class="col"></div>
 	</div>
