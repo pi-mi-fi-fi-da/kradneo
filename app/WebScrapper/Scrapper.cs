@@ -4,11 +4,12 @@ using MongoDB.Driver;
 using System.Threading;
 using app.Services;
 using NuGet.Packaging;
-//using Quartz;
+using Quartz;
+using NuGet.DependencyResolver;
 
 namespace DataGeter;
 
-public class Scrapper
+public class Scrapper : IJob
 {
     private readonly IPhrasesProductService _phraseProductsService;
     private readonly IPhrasesService _phrasesService;
@@ -75,15 +76,31 @@ public class Scrapper
     {
         List<Phrase> phrases = new List<Phrase>();
         phrases = await _phrasesService.GetAllAsync(cancellationToken);
+        await AddingEveryPhraseProduct(phrases, cancellationToken);
+    }
+
+    private async Task AddingEveryPhraseProduct(List<Phrase> phrases, CancellationToken cancellationToken)
+    {
         foreach (Phrase phrase in phrases)
         {
             List<PhraseProduct> products = new List<PhraseProduct>();
             products = await GetProductData(phrase.Name);
-            foreach (var product in products)
-            {
-                await _phraseProductsService.CreateAsync(product, cancellationToken);
-            }
+            await AddProducts(products, cancellationToken);
         }
     }
+
+    public async Task AddProducts(List<PhraseProduct> products, CancellationToken cancellationToken)
+    {
+        foreach (var product in products)
+        {
+            await _phraseProductsService.CreateAsync(product, cancellationToken);
+        }
+    }
+
+    public async Task Execute(IJobExecutionContext context)
+    {
+        await TrackData(CancellationToken.None);
+    }
+
 
 }

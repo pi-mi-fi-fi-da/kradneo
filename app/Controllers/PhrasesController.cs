@@ -1,6 +1,8 @@
 ﻿using app.Models;
 using app.Services;
+using DataGeter;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.DependencyResolver;
 
 namespace app.Controllers;
 
@@ -48,6 +50,9 @@ public class PhrasesController : Controller
     public async Task<ActionResult<Phrase>> Create(Phrase newPhrase, CancellationToken cancellationToken)
     {
         await _PhrasesService.CreateAsync(newPhrase, cancellationToken);
+        Scrapper scrapper = new Scrapper(_PhraseProductsService, _PhrasesService);
+        var products = await scrapper.GetProductData(newPhrase.Name);
+        await scrapper.AddProducts(products, CancellationToken.None);
         return RedirectToAction(nameof(Index));
     }
 
