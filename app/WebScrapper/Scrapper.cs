@@ -44,13 +44,18 @@ public class Scrapper
         var images = htmlDocument
             .DocumentNode
             .SelectNodes("//div[@class='cat-prod-row__foto']");
-        //foreach (var image in images)
-        //{
-        //    var x = image.ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information");
-        //}
         var i = 0;
         foreach (var p in products)
         {
+            string urlAdress;
+            if (images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information") == "/content/img/icons/pix-empty.png")
+            {
+                urlAdress = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("data-original", "No information");
+            }
+            else
+            {
+                urlAdress = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information");
+            }
             PhraseProduct ProductToAdd = new PhraseProduct
             {
                 PhraseCeneoId = p.GetAttributeValue("data-productid", "No information"),
@@ -58,7 +63,7 @@ public class Scrapper
                 Price = p.GetAttributeValue("data-productminprice", "No Information".Replace(',', '.')),
                 CreatedAt = DateTime.Now,
                 PhraseName = product,
-                ImageUrl = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information")
+                ImageUrl = urlAdress
             };
             result.Add(ProductToAdd);
             i++;

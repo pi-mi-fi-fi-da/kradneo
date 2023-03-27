@@ -32,8 +32,8 @@ public class PhrasesController : Controller
         var phrase = await _PhrasesService.GetOneAsync(id, cancellationToken);
         if (phrase is null) return NotFound();
         var phraseProducts = await _PhraseProductsService.GetAllByPhraseNameAsync(phrase.Name, cancellationToken);
-        var test = new PhraseDetail(phrase, phraseProducts);
-        return View(test);
+        var phraseDetails = new PhraseDetail(phrase, phraseProducts);
+        return View(phraseDetails);
     }
 
     // GET: PhrasesController/Create

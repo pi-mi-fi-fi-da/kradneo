@@ -145,9 +145,6 @@
 
 <div class="d-flex justify-content-between align-items-center">
     <h2>@Model.phrase.Name</h2>
-    <p>
-        <i>@Model.phrase.Id</i>
-    </p>
 </div>
 <br />
 <table class="table">
@@ -188,7 +185,10 @@
 					@Html.DisplayFor(modelItem => products.CreatedAt)
 				</td>
 				<td class="text-center">
-					@Html.DisplayFor(modelItem => products.ImageUrl)
+                    @if (products.ImageUrl != "")
+                    {
+                        <img src="@products.ImageUrl" alt="Sample Image" max-width="300px" max-height="300px" />
+                    }
 				</td>
 			</tr>
 			i++;
