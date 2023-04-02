@@ -1,8 +1,12 @@
 using app.Models;
+using app.quartz;
 using app.Services;
 using DataGeter;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +39,20 @@ builder.Services.AddScoped<IPhrasesProductService, PhraseProductsService>();
 
 //quartz
 
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+    var jobKey = new JobKey("Scrapper");
+    q.AddJob<Scrapper>(opts => opts.WithIdentity(jobKey));
 
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("DemoJob-trigger")
+        .WithCronSchedule("0 0/5 * * * ?"));
 
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 var app = builder.Build();
 
@@ -67,8 +83,9 @@ app.MapControllerRoute(
 //    //var products = app.Services.GetRequiredService<IMongoCollection<PhraseProduct>>();
 //    //await products.InsertOneAsync(new PhraseProduct { PhraseName = $"fraza_{DateTime.UtcNow}" });
 //});
-Scrapper scrapper = new Scrapper(new PhraseProductsService(products), new PhrasesService(phrases));
-await scrapper.TrackData(CancellationToken.None);
+//Scrapper scrapper = new Scrapper(new PhraseProductsService(products), new PhrasesService(phrases));
+//await scrapper.TrackData(CancellationToken.None);
+
 app.Run();
 
 

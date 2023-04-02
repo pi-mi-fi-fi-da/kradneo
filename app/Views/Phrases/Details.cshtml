@@ -179,7 +179,17 @@
 					@Html.DisplayFor(modelItem => products.ProductName)
 				</td>
 				<td class="text-center">
-					@Html.DisplayFor(modelItem => products.Price)
+                    @{
+                        string test="";
+                        if (products.Price.Contains('.'))
+                        {
+                            test = string.Concat(products.Price, " zł");
+                        }
+                        else{
+                            test = string.Concat(products.Price, ".00 zł");
+                        }
+                    }
+                    @test
 				</td>
 				<td class="text-center">
 					@Html.DisplayFor(modelItem => products.CreatedAt)
