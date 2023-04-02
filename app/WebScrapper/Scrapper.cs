@@ -37,26 +37,45 @@ public class Scrapper : IJob
 
         var products = htmlDocument
             .DocumentNode
-            .SelectNodes("//div[@class='cat-prod-row js_category-list-item js_clickHashData js_man-track-event   js_redirectorLinkData']");
-        var products2 = htmlDocument.
-            DocumentNode
-            .SelectNodes("//div[@class='cat-prod-row js_category-list-item js_clickHashData js_man-track-event   ']");
-        products.AddRange(products2);
+            .SelectNodes("//div[contains(@class, 'js_category-list-item')]");
+		var i = 0;
         var images = htmlDocument
             .DocumentNode
             .SelectNodes("//div[@class='cat-prod-row__foto']");
-        var i = 0;
+        if (images == null) {
+			images = htmlDocument
+			.DocumentNode
+			.SelectNodes("//div[@class='cat-prod-box__picture']");
+		}
+        
         foreach (var p in products)
         {
             string urlAdress;
-            if (images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information") == "/content/img/icons/pix-empty.png")
+            if (images != null)
             {
-                urlAdress = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("data-original", "No information");
+                if (images[i] != null)
+                {
+                    if (images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information") == "/content/img/icons/pix-empty.png")
+                    {
+                        urlAdress = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("data-original", "No information");
+                    }
+                    else
+                    {
+                        urlAdress = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information");
+                    }
+                }
+                else
+                {
+                    urlAdress = "blank";
+                }
             }
             else
             {
-                urlAdress = images[i].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "No information");
+                urlAdress = "blank";
             }
+			
+           
+
             PhraseProduct ProductToAdd = new PhraseProduct
             {
                 PhraseCeneoId = p.GetAttributeValue("data-productid", "No information"),
